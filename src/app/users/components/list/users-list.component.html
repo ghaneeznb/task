@@ -1,41 +1,8 @@
-<!-- <div class="demo-button-container">
+<div class="demo-button-container">
   <button mat-flat-button (click)="addUserDialog()" color="accent"> Add Users</button>
-</div> -->
+</div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
  </table>
-
-<!-- <mat-table #table [dataSource]="dataSource">
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-  <!-- <ng-container matColumnDef="dateOfRegistration">
-    <mat-header-row *matHeaderRowDef="displayedColumns">DateOfRegistration</mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
-      <mat-cell data-label="DateOfRegistration" *matCellDef="let element"><span
-          title="{{element.dateOfRegistration}}"></span></mat-cell>
-    </mat-row>
-  </ng-container> -->
-
-  <!-- <ng-container matColumnDef="status">
-    <mat-header-row *matHeaderRowDef="displayedColumns">Status</mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
-      <mat-cell data-label="Status" *matCellDef="let element"><span
-          title="{{element.status}}"></span></mat-cell>
-    </mat-row>
-  </ng-container> -->
-
-  <!-- <ng-container matColumnDef="accessLevel">
-    <th mat-header-cell *matHeaderCellDef>AccessLevel</th>
-    <td mat-cell *matCellDef="let element">{{element.accessLevel}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef>Email</th>
-    <td mat-cell *matCellDef="let element">{{element.email}}</td>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-<!-- </mat-table> -->
