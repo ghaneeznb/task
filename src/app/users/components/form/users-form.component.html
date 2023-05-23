@@ -1,1 +1,27 @@
-<app-users-form></app-users-form>
+<h1 mat-dialog-title>Add Users</h1>
+<div mat-dialog-content>
+    <mat-form-field color="accent">
+      <mat-label>registrationDate</mat-label>
+      <input matInput [matDatepicker]="registrationDate">
+      <mat-datepicker-toggle matIconSuffix [for]="registrationDate"></mat-datepicker-toggle>
+      <mat-datepicker #registrationDate></mat-datepicker>
+    </mat-form-field>
+    <mat-radio-group aria-label="Status">
+      <mat-radio-button value="true">Active</mat-radio-button>
+      <mat-radio-button value="false">DeActive 2</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field>
+      <mat-label>AccessLevel</mat-label>
+      <mat-select formControlName="accessLevel">
+        <mat-option *ngFor="let item of accessLevel" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+  <div class="row d-flex justify-content-center align-items-center">
+    <button mat-flat-button class="col-4" color="accent">Add User</button>
+    <button mat-flat-button class="col-4" color="warn">Cancel</button>
+  </div>
+</div>
