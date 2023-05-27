@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { identifierName } from '@angular/compiler';
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,9 +18,10 @@ export class UsersListComponent implements OnInit, AfterViewInit {
   user!: IUser | null;
   displayDialog: number = 0;
   data!: IDialog;
-  displayedColumns: string[] = ['id', 'registrationDate', 'status', 'accessLevel', 'email', 'manageUsers'];
+  displayedColumns: string[] = ['select', 'id', 'registrationDate', 'status', 'accessLevel', 'email', 'manageUsers'];
   dataSource!: MatTableDataSource<IUser>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  selection = new SelectionModel<IUser>(true, []);
 
   constructor(
     private usersService: UsersService,
@@ -81,8 +83,36 @@ export class UsersListComponent implements OnInit, AfterViewInit {
     this.loadUsers();
   }
 
+  deleteUsers(selection: Array<IUser>) {
+    for(let item of selection){
+      this.usersService.deleteUser(item);
+    }
+    this.loadUsers();
+  }
+
   getFormData() {
     this.loadUsers();
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+    this.selection.select(...this.dataSource.data);
+  }
+
+  checkboxLabel(row?: IUser): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 }
 

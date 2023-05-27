@@ -1,12 +1,29 @@
-<div class="demo-button-container d-flex justify-content-between align-items-center" style="margin:2rem 0;">
+<div class="demo-button-container d-flex justify-content-around align-items-center" style="margin:2rem 0;">
   <mat-form-field>
     <mat-label>Filter user...</mat-label>
     <input matInput (keyup)="filterUsers($event)" #input>
   </mat-form-field>
   <button mat-flat-button (click)="addUserDialog()" color="accent"> Add Users</button>
+  <button mat-flat-button (click)="deleteUsers(dataSource.data)" color="primary"> Delate Users</button>
 </div>
 <mat-card>
   <table class="users-table" mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef style="padding:5px ;">
+        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row" style="padding:5px ;">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> # </th>
       <td mat-cell *matCellDef="let element"> {{element.id + 1}} </td>
@@ -44,7 +61,7 @@
       </td>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></mat-row>
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </mat-card>
