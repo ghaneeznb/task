@@ -34,17 +34,4 @@ export class UsersService {
     localStorage.setItem("users", JSON.stringify(users));
   }
 
-  public checkUniqueValue(user: any, filed: string) {
-    let searchData = this.users();
-    if (user.id)
-      searchData = searchData.filter(x => x.id !== user.id);
-    return searchData.length ? this.findIndex(user, filed) : false;
-  }
-
-  findIndex(user: any, filed: string) {
-    let searchData = this.users();
-    return filed === "registrationDate" ? searchData.findIndex((x: any) => new Date(x[filed]) !== user[filed]) :
-      searchData.findIndex((x: any) => x[filed] !== user[filed]);
-  }
-
 }
