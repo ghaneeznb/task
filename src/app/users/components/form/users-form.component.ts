@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IUser } from '../../models/user.model';
 import { UsersService } from '../../services/users.service';
 
@@ -14,25 +14,27 @@ export class UsersFormComponent implements OnInit, OnDestroy {
     if (value)
       this.displayDialog = true
   }
+
   @Output() userFormData: EventEmitter<IUser> = new EventEmitter();
   displayDialog!: boolean;
   formGroup!: FormGroup;
   dispatch: Function;
   submitted: boolean = false;
   users!: Array<IUser>;
-
   accessLevel: string[] = ['admin', 'support', 'designer', 'user', 'developer'];
 
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
     private dialogRef: MatDialogRef<UsersFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: IUser
   ) {
     this.dispatch = this.defineUser;
+    this.createForm();
   }
 
   ngOnInit(): void {
-    this.createForm();
+    this.loadUserUpdateMode(this.data)
   }
 
   ngOnDestroy(): void {
@@ -43,8 +45,8 @@ export class UsersFormComponent implements OnInit, OnDestroy {
     this.formGroup = this.fb.group({
       id: [null],
       accessLevel: [null, Validators.required],
-      status: [null, Validators.required],
-      dateOfRegistration: [null, Validators.required],
+      status: [true, Validators.required],
+      registrationDate: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
     });
   }
@@ -54,9 +56,9 @@ export class UsersFormComponent implements OnInit, OnDestroy {
     this.formGroup.markAllAsTouched();
     if (this.formGroup.valid) {
       this.dispatch();
-      this.formGroup.reset();
       this.userFormData.emit();
     }
+    this.dialogRef.close();
   }
 
   public hideDialog() {
@@ -67,6 +69,24 @@ export class UsersFormComponent implements OnInit, OnDestroy {
 
   private defineUser() {
     this.usersService.addUser(this.formGroup.value);
+    this.displayDialog = false;
+  }
+
+  private loadUserUpdateMode(value: IUser) {
+    if(value){
+      this.formGroup.patchValue({
+        id: value.id,
+        email: value.email,
+        status: value.status,
+        registrationDate: new Date(value.registrationDate),
+        accessLevel: value.accessLevel,
+      });
+      this.dispatch = this.updateUser;
+    }
+  }
+
+  private updateUser() {
+    this.usersService.updateUser(this.formGroup.value);
     this.displayDialog = false;
   }
 

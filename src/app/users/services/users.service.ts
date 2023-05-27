@@ -21,4 +21,30 @@ export class UsersService {
     localStorage.setItem("users", JSON.stringify(users));
   }
 
+  deleteUser(user: IUser) {
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    const index = this.users().findIndex(({ id }) => id === user.id);
+    users.splice(index, 1);
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+
+  updateUser(user: IUser) {
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    Object.assign((users.find((x: IUser) => x.id === user.id) || {}), user);
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+
+  public checkUniqueValue(user: any, filed: string) {
+    let searchData = this.users();
+    if (user.id)
+      searchData = searchData.filter(x => x.id !== user.id);
+    return searchData.length ? this.findIndex(user, filed) : false;
+  }
+
+  findIndex(user: any, filed: string) {
+    let searchData = this.users();
+    return filed === "registrationDate" ? searchData.findIndex((x: any) => new Date(x[filed]) !== user[filed]) :
+      searchData.findIndex((x: any) => x[filed] !== user[filed]);
+  }
+
 }

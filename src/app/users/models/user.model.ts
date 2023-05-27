@@ -1,6 +1,6 @@
 export interface IUser {
     id: number;
-    dateOfRegistration: Date;
+    registrationDate: Date;
     status: boolean;
     accessLevel: string;
     email: string;

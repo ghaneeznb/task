@@ -1,27 +1,37 @@
 <h1 mat-dialog-title>Add Users</h1>
-<div mat-dialog-content>
-    <mat-form-field color="accent">
+<div mat-dialog-content [formGroup]="formGroup">
+  <div class="row my-2">
+    <mat-form-field color="accent" appearance="outline">
       <mat-label>registrationDate</mat-label>
-      <input matInput [matDatepicker]="registrationDate">
+      <input matInput [matDatepicker]="registrationDate" formControlName="registrationDate">
       <mat-datepicker-toggle matIconSuffix [for]="registrationDate"></mat-datepicker-toggle>
       <mat-datepicker #registrationDate></mat-datepicker>
     </mat-form-field>
-    <mat-radio-group aria-label="Status">
-      <mat-radio-button value="true">Active</mat-radio-button>
-      <mat-radio-button value="false">DeActive 2</mat-radio-button>
+  </div>
+  <div class="row my-2" style="height: 50px;">
+    <label>Status: </label>
+    <mat-radio-group formControlName="status">
+      <mat-radio-button [value]="true">Active</mat-radio-button>
+      <mat-radio-button [value]="false">DeActive</mat-radio-button>
     </mat-radio-group>
-    <mat-form-field>
-      <mat-label>AccessLevel</mat-label>
-      <mat-select formControlName="accessLevel">
+  </div>
+  <div class="row my-2">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-select required formControlName="accessLevel">
         <mat-option *ngFor="let item of accessLevel" [value]="item">{{item}}</mat-option>
       </mat-select>
+      <mat-label>AccessLevel</mat-label>
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email">
-    </mat-form-field>
-  <div class="row d-flex justify-content-center align-items-center">
-    <button mat-flat-button class="col-4" color="accent">Add User</button>
-    <button mat-flat-button class="col-4" color="warn">Cancel</button>
   </div>
+  <div class="row my-2">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Enter Email" required formControlName="email">
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+  </div>
+  <section>
+    <button mat-stroked-button color="accent" (click)="saveUser()">Add User</button>
+    <button mat-stroked-button color="primary" (click)="hideDialog()">Cancel</button>
+  </section>
 </div>

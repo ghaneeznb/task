@@ -1,0 +1,38 @@
+
+
+.users-table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+    height: 49px;
+    padding: 16px;
+}
+
+.mat-column-accessLevel {
+    width: 20%;
+}
+
+.mat-column-manageUser {
+    width: 5%;
+}
+
+.mat-column-email {
+    width: 25%;
+}
+
+.mat-column-status {
+    width: 20%;
+}
+
+.mat-column-id {
+    width: 5%;
+}
+
+.mat-column-registrationDate {
+    width: 25%;
+}

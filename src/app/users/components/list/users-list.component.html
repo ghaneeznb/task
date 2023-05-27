@@ -1,8 +1,50 @@
-<div class="demo-button-container">
+<div class="demo-button-container d-flex justify-content-between align-items-center" style="margin:2rem 0;">
+  <mat-form-field>
+    <mat-label>Filter user...</mat-label>
+    <input matInput (keyup)="filterUsers($event)" #input>
+  </mat-form-field>
   <button mat-flat-button (click)="addUserDialog()" color="accent"> Add Users</button>
 </div>
-
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
- </table>
+<mat-card>
+  <table class="users-table" mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.id + 1}} </td>
+    </ng-container>
+    <ng-container matColumnDef="registrationDate">
+      <th mat-header-cell *matHeaderCellDef> registrationDate </th>
+      <td mat-cell *matCellDef="let element"> {{element.registrationDate | date : 'longDate'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> status </th>
+      <td mat-cell *matCellDef="let element">
+        <span>
+          <mat-icon *ngIf="element.status" color="accent">check_circle</mat-icon>
+          <mat-icon *ngIf="!element.status" color="primary">do_disturb_on</mat-icon>
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="accessLevel">
+      <th mat-header-cell *matHeaderCellDef> accessLevel </th>
+      <td mat-cell *matCellDef="let element"> {{element.accessLevel}} </td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+    <ng-container matColumnDef="manageUsers">
+      <th mat-header-cell *matHeaderCellDef> manageUsers </th>
+      <td mat-cell *matCellDef="let element" style="padding:0 ;">
+        <button mat-icon-button color="accent" (click)="updateUser(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="deleteUser(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</mat-card>
